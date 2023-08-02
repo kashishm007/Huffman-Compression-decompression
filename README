@@ -1,0 +1,70 @@
+# --------------------------------------------
+#   Name: Kashish Mittal
+#   ID: 1638174
+#   CMPUT 274, Fall 2020
+#
+#   Assignment 2: Huffman Coding
+# --------------------------------------------
+Included Files:
+			*util.py
+			*README
+
+Accessories:None
+
+Wiring Instructions:None
+
+Notes and Assumption:
+    The file util.py contains the following function:
+        read_tree:   This function is used to read a description of the huffman
+                     tree ,by using pickle.load() from the pickle module, from
+                     the stream passed as an argument
+
+        decode_byte: This function reads bit by bit from the bitreader then
+                     uses that bit to get to leaf of the tree and then return
+                     that value. It does so by running a while loop until the
+                     given object tree is of class TreeLeaf. Inside the while
+                     loop we first read a bit from the bitreader and check if
+                     the bit is equal to 1 then set the tree equal right branch
+                     of itself and if it is not then we set the tree to the
+                     left branch of itself, when we get a tree with no branches
+                     we return its value.
+
+        decompress:  This function first reads a tree from the given compressed
+                     stream and uses that tree to decode the rest of the stream
+                     It does so by initialing the bitreader using the
+                     compressed stream then calls the decode_byte function to
+                     get the value from the tree. Then we run a while loop
+                     until the value returned from decode byte is not None,
+                     i.e. until we reach the end of file. in the while loop
+                     we use the bitwriter.writebits to write 8 bits at a time
+                     to uncompressed stream.Then we again use decode_byte to
+                     get next value from the tree. After writing everything on
+                     the compressed stream we use flush to account for any
+                     partially written bytes.
+
+        write_tree:  This function is used to write the specified Huffman tree
+                     to the given tree_stream using pickle.dump from the pickle
+                     module.
+
+        compress:    This function is first writes a tree to the given
+                     compressed stream and uses that tree to encode the rest of
+                     the stream. It does so by first initializing the bitreader
+                     and bitwriter using uncompressed and the compressed stream
+                     respectively then it makes an encoding table from the
+                     given tree by calling the make_encoding_table function.
+                     It then reads a byte(8 bits) using readbits. Then we run a
+                     while loop until the value of byte is none(we actually set
+                     byte = None when we reach end of file by using try and
+                     except). Inside the while loop we first get the value
+                     corresponding to the key = byte in the dictionary
+                     encoding_table then run a for loop on that tuple to write
+                     bit by bit on compressed stream using writebit then we
+                     read the next byte. After the while loop we get the value
+                     for the EOF character by using the value corresponding to
+                     key when byte is None then do the same thing to write bit
+                     by bit in the given compressed stream. After writing
+                     everything on the compressed stream we use flush to
+                     account for any partially written bytes.
+
+
+
